@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  webapp:
+    build: .
+    container_name: ondemand
+    ports:
+      - "80:80"
+      - "5554:5554"
+    volumes:
+      - .:/var/www/html
+    restart: unless-stopped
