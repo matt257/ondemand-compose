@@ -68,9 +68,9 @@ RUN echo -e "#\n\
 # Portal configuration\n\
 #\n\
 listen_addr_port:\n\
-  - '3443'\n\
+  - '8080'\n\
 servername: localhost\n\
-port: 3443\n\
+port: 8080\n\
 ssl:\n\
   - 'SSLCertificateFile \"/etc/pki/tls/certs/localhost.crt\"'\n\
   - 'SSLCertificateKeyFile \"/etc/pki/tls/private/localhost.key\"'\n\
@@ -92,7 +92,6 @@ dex:\n\
           filter: \"(objectClass=inetOrgPerson)\"\n\
           username: uid  # The attribute used as the username\n\
           idAttr: uid\n\
-          emailAttr: mail  # Adjust if your LDAP schema includes an email attribute\n\
           nameAttr: cn\n\
           preferredUsernameAttr: uid  # Use UID or another attribute as the preferred username\n\
 " > /etc/ood/config/ood_portal.yml
