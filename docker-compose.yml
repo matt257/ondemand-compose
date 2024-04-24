@@ -1,11 +1,39 @@
 version: '3.8'
+
 services:
-  webapp:
-    build: .
+  ondemand:
+    build:
+      context: ./ondemand
     container_name: ondemand
     ports:
-      - "80:80"
+      - "3443:3443"
       - "5554:5554"
-    volumes:
-      - .:/var/www/html
     restart: unless-stopped
+    networks:
+      - network-1
+    depends_on:
+      - ldap
+
+  ldap:
+    build: 
+      context: ./ldap
+    container_name: ldap
+    ports:
+      - "389:389"
+      - "636:636"
+    environment:
+      LDAP_DOMAIN: "example.com"
+      LDAP_ADMIN_PASSWORD: "admin"
+      LDAP_CONFIG_PASSWORD: "password"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+    networks:
+      - network-1
+
+networks:
+  network-1:
+    driver: bridge

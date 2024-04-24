@@ -62,5 +62,45 @@ RUN sed -i 's|SSLCertificateFile.*|SSLCertificateFile /etc/pki/tls/certs/localho
 # Reinstall Ruby to ensure proper integration with OpenSSL
 RUN /bin/bash -l -c "rvm pkg install openssl && rvm reinstall ruby-3.1.4 --with-openssl-dir=$HOME/.rvm/usr"
 
-# Command to start HTTP server
+# Update ood-portal.yml
+RUN rm -f /etc/ood/config/ood_portal.yml
+RUN echo -e "#\n\
+# Portal configuration\n\
+#\n\
+listen_addr_port:\n\
+  - '3443'\n\
+servername: localhost\n\
+port: 3443\n\
+ssl:\n\
+  - 'SSLCertificateFile \"/etc/pki/tls/certs/localhost.crt\"'\n\
+  - 'SSLCertificateKeyFile \"/etc/pki/tls/private/localhost.key\"'\n\
+dex_uri: false\n\
+dex:\n\
+  client_id: localhost\n\
+  connectors:\n\
+    - type: ldap\n\
+      id: ldap\n\
+      name: LDAP\n\
+      config:\n\
+        host: ldap:636  # Use the service name defined in docker-compose and the SSL port\n\
+        insecureNoSSL: true\n\
+        insecureSkipVerify: true  # Use this only in development; remove in production\n\
+        bindDN: cn=admin,dc=example,dc=com  # The DN of the admin user\n\
+        bindPW: password  # Password for the admin user; consider securing this better in production\n\     
+        userSearch:\n\
+          baseDN: ou=users,dc=example,dc=com\n\
+          filter: \"(objectClass=inetOrgPerson)\"\n\
+          username: uid  # The attribute used as the username\n\
+          idAttr: uid\n\
+          emailAttr: mail  # Adjust if your LDAP schema includes an email attribute\n\
+          nameAttr: cn\n\
+          preferredUsernameAttr: uid  # Use UID or another attribute as the preferred username\n\
+" > /etc/ood/config/ood_portal.yml
+
+RUN  /opt/ood/ood-portal-generator/sbin/update_ood_portal
+
+# Configure httpd 
+RUN echo -e "ServerName localhost\n" >> /etc/httpd/conf/httpd.conf
+
+# Start httpd
 CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
