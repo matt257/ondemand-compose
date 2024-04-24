@@ -6,7 +6,7 @@ services:
       context: ./ondemand
     container_name: ondemand
     ports:
-      - "8080:8080"
+      - "80:80"
       - "5554:5554"
     restart: unless-stopped
     networks:
