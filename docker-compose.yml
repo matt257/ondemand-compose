@@ -7,7 +7,9 @@ services:
     container_name: ondemand
     ports:
       - "80:80"
+      - "8080:8080"
       - "5554:5554"
+      - "5556:5556"
     restart: unless-stopped
     networks:
       - network-1
@@ -22,9 +24,8 @@ services:
       - "389:389"
       - "636:636"
     environment:
-      LDAP_DOMAIN: "example.com"
-      LDAP_ADMIN_PASSWORD: "admin"
-      LDAP_CONFIG_PASSWORD: "password"
+      - CONTAINER_LOG_LEVEL=debug
+      - LDAP_TLS_VERIFY_CLIENT=never
     restart: always
     networks:
       - network-1

@@ -4,7 +4,7 @@ ou: users
 
 dn: uid=admin,ou=users,dc=example,dc=com
 objectClass: inetOrgPerson
-cn: admin admin
+cn: admin
 sn: admin
 uid: admin
-userPassword: password
+userPassword: admin
