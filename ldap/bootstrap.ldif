@@ -1,10 +1,25 @@
+# Base domain
+dn: dc=example,dc=com
+objectClass: top
+objectClass: domain
+objectClass: extensibleObject
+dc: example
+
+# Administrator
+dn: cn=admin,dc=example,dc=com
+objectClass: organizationalRole
+cn: admin
+
+# Organizational Unit for Users
 dn: ou=users,dc=example,dc=com
 objectClass: organizationalUnit
 ou: users
 
-dn: uid=admin,ou=users,dc=example,dc=com
+# Example User
+dn: uid=jane.doe,ou=users,dc=example,dc=com
 objectClass: inetOrgPerson
-cn: admin
-sn: admin
-uid: admin
-userPassword: admin
+uid: jane.doe
+sn: Doe
+cn: Jane Doe
+mail: jane.doe@example.com
+userPassword: password 

@@ -85,7 +85,7 @@ dex:\n\
         insecureNoSSL: true\n\
         insecureSkipVerify: true\n\
         bindDN: cn=admin,dc=example,dc=com\n\
-        bindPW: admin\n\     
+        bindPW: admin\n\
         userSearch:\n\
           baseDN: ou=users,dc=example,dc=com\n\
           filter: \"(objectClass=inetOrgPerson)\"\n\
@@ -104,8 +104,9 @@ apache ALL=(ALL) NOPASSWD: /opt/ood/nginx_stage/sbin/nginx_stage' >/etc/sudoers.
 RUN /opt/ood/ood-portal-generator/sbin/update_ood_portal
 RUN /opt/ood/nginx_stage/sbin/update_nginx_stage
 
-# Configure httpd 
-RUN echo -e "ServerName localhost\n" >> /etc/httpd/conf/httpd.conf
+# Configure httpd servername to be localhost and OIDCSSL validation to be off
+RUN echo -e "ServerName localhost\n\
+OIDCSSLValidateServer Off\n" >> /etc/httpd/conf/httpd.conf
 
 # Start ondemand
 ADD startup.sh /startup.sh
