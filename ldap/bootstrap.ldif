@@ -1,25 +1,48 @@
-# Base domain
-dn: dc=example,dc=com
+# Define the domain component
+dn: dc=ldap,dc=localhost
 objectClass: top
-objectClass: domain
-objectClass: extensibleObject
-dc: example
+objectClass: dcObject
+objectClass: organization
+o: Local Organization
+dc: ldap
+description: Root LDAP entry for local development
 
-# Administrator
-dn: cn=admin,dc=example,dc=com
+# Define the admin entry
+dn: cn=admin,dc=ldap,dc=localhost
 objectClass: organizationalRole
 cn: admin
+description: LDAP administrator
+userPassword: admin
 
-# Organizational Unit for Users
-dn: ou=users,dc=example,dc=com
+# Define the organizational units
+dn: ou=People,dc=ldap,dc=localhost
 objectClass: organizationalUnit
-ou: users
+ou: People
 
-# Example User
-dn: uid=jane.doe,ou=users,dc=example,dc=com
+dn: ou=Groups,dc=ldap,dc=localhost
+objectClass: organizationalUnit
+ou: Groups
+
+# Define a sample user
+dn: uid=adminuser,ou=People,dc=ldap,dc=localhost
 objectClass: inetOrgPerson
-uid: jane.doe
-sn: Doe
-cn: Jane Doe
-mail: jane.doe@example.com
-userPassword: password 
+objectClass: posixAccount
+objectClass: top
+cn: Admin User
+sn: User
+uid: adminuser
+mail: adminuser@ldap.localhost
+uidNumber: 1001
+gidNumber: 1001
+homeDirectory: /home/adminuser
+userPassword: adminpass
+gecos: Admin User
+
+# Define a sample group
+dn: cn=developers,ou=Groups,dc=ldap,dc=localhost
+objectClass: posixGroup
+objectClass: top
+cn: developers
+gidNumber: 1001
+memberUid: adminuser
+description: Group of developers
