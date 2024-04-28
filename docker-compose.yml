@@ -15,19 +15,20 @@ services:
       - ldap
 
   ldap:
-    image: osixia/openldap:1.5.0
+    build:
+      context: ./ldap
     container_name: ldap
     ports:
       - "389:389"
       - "636:636"
     environment:
       - LDAP_LOG_LEVEL=256
-      - LDAP_ORGANISATION="local"
-      - LDAP_DOMAIN="ldap.localhost"
-      - LDAP_ADMIN_PASSWORD="admin"
+      - LDAP_ORGANISATION=local host
+      - LDAP_DOMAIN=ldap.localhost
+      - LDAP_ADMIN_PASSWORD=admin
       - LDAP_TLS_VERIFY_CLIENT=never
     volumes:
-      - ./ldap:/container/service/slapd/assets/config/bootstrap/ldif/custom
+      - ./ldap/startup.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif
     restart: unless-stopped
     networks:
       - network-1

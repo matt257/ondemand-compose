@@ -31,7 +31,7 @@ RUN dnf -y module reset ruby && \
     dnf -y module enable ruby:3.1
 
 # Install Ruby and additional packages
-RUN dnf -y install ruby wget which httpd nodejs gcc gcc-c++ && \
+RUN dnf -y install ruby wget which httpd nodejs gcc gcc-c++ nmap-ncat && \
     dnf -y module reset nodejs && \
     dnf -y module enable nodejs:18 && \
     dnf -y install nodejs
@@ -84,10 +84,10 @@ dex:\n\
         host: ldap:389\n\
         insecureNoSSL: true\n\
         insecureSkipVerify: true\n\
-        bindDN: cn=admin,dc=example,dc=com\n\
+        bindDN: cn=admin,dc=ldap,dc=localhost\n\
         bindPW: admin\n\
         userSearch:\n\
-          baseDN: ou=users,dc=example,dc=com\n\
+          baseDN: dc=ldap,dc=localhost\n\
           filter: \"(objectClass=inetOrgPerson)\"\n\
           username: uid\n\
           idAttr: uid\n\

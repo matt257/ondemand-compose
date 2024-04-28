@@ -1,0 +1,17 @@
+# Load the basic schema
+dn: cn=admin,dc=ldap,dc=localhost
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: admin
+description: LDAP administrator
+userPassword: admin
+
+# Define the base domain
+dn: dc=ldap,dc=localhost
+objectClass: top
+objectClass: dcObject
+objectclass: organization
+o: local host
+dc: ldap
+description: Root LDAP entry
+
