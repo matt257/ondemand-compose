@@ -1,17 +1,36 @@
-# Load the basic schema
-dn: cn=admin,dc=ldap,dc=localhost
-objectClass: simpleSecurityObject
+# dn: dc=example,dc=org
+# objectClass: top
+# objectClass: dcObject
+# objectclass: organization
+# o: Example Inc
+# dc: example
+
+# Add the admin user
+dn: cn=admin,dc=example,dc=org
 objectClass: organizationalRole
 cn: admin
 description: LDAP administrator
-userPassword: admin
 
-# Define the base domain
-dn: dc=ldap,dc=localhost
-objectClass: top
-objectClass: dcObject
-objectclass: organization
-o: local host
-dc: ldap
-description: Root LDAP entry
+# Organizational units
+dn: ou=people,dc=example,dc=org
+objectClass: organizationalUnit
+ou: people
 
+dn: ou=groups,dc=example,dc=org
+objectClass: organizationalUnit
+ou: groups
+
+# Example user
+dn: uid=hpc.user,ou=people,dc=example,dc=org
+objectClass: inetOrgPerson
+uid: hpc.user
+sn: User
+cn: HPC User
+mail: hpc.user@example.org
+userPassword: password
+
+# Example group
+dn: cn=exampleGroup,ou=groups,dc=example,dc=org
+objectClass: groupOfNames
+cn: exampleGroup
+member: uid=hpc.user,ou=people,dc=example,dc=org

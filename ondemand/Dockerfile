@@ -62,45 +62,12 @@ RUN sed -i 's|SSLCertificateFile.*|SSLCertificateFile /etc/pki/tls/certs/localho
 # Reinstall Ruby to ensure proper integration with OpenSSL
 RUN /bin/bash -l -c "rvm pkg install openssl && rvm reinstall ruby-3.1.4 --with-openssl-dir=$HOME/.rvm/usr"
 
-# Update ood-portal.yml
-
-RUN echo -e "#\n\
-# Portal configuration\n\
-#\n\
-listen_addr_port:\n\
-  - '8080'\n\
-servername: localhost\n\
-port: 8080\n\
-ssl:\n\
-  - 'SSLCertificateFile \"/etc/pki/tls/certs/localhost.crt\"'\n\
-  - 'SSLCertificateKeyFile \"/etc/pki/tls/private/localhost.key\"'\n\
-dex:\n\
-  client_id: localhost\n\
-  connectors:\n\
-    - type: ldap\n\
-      id: ldap\n\
-      name: LDAP\n\
-      config:\n\
-        host: ldap:389\n\
-        insecureNoSSL: true\n\
-        insecureSkipVerify: true\n\
-        bindDN: cn=admin,dc=ldap,dc=localhost\n\
-        bindPW: admin\n\
-        userSearch:\n\
-          baseDN: dc=ldap,dc=localhost\n\
-          filter: \"(objectClass=inetOrgPerson)\"\n\
-          username: uid\n\
-          idAttr: uid\n\
-          nameAttr: cn\n\
-          preferredUsernameAttr: uid\n\
-" > /etc/ood/config/ood_portal.yml
-
 # setup sudoers for apache
 RUN echo -e 'Defaults:apache !requiretty, !authenticate \n\
 Defaults:apache env_keep += "NGINX_STAGE_* OOD_*" \n\
 apache ALL=(ALL) NOPASSWD: /opt/ood/nginx_stage/sbin/nginx_stage' >/etc/sudoers.d/ood
 
-
+COPY ./ood_portal.yml /etc/ood/config/ood_portal.yml
 RUN /opt/ood/ood-portal-generator/sbin/update_ood_portal
 RUN /opt/ood/nginx_stage/sbin/update_nginx_stage
 

@@ -1,0 +1,36 @@
+#
+# Portal configuration
+#
+listen_addr_port:
+- '8080'
+servername: localhost
+port: 8080
+ssl:
+  - 'SSLCertificateFile "/etc/pki/tls/certs/localhost.crt"'
+  - 'SSLCertificateKeyFile "/etc/pki/tls/private/localhost.key"'
+dex:
+  connectors:
+    - type: ldap
+      id: ldap
+      name: LDAP
+      config:
+        host: ldap:389
+        insecureNoSSL: true
+        insecureSkipVerify: true
+        bindDN: cn=admin,dc=example,dc=org
+        bindPW: admin
+        userSearch:
+          baseDN: ou=people,dc=example,dc=org
+          filter: "(objectClass=inetOrgPerson)"
+          username: uid
+          idAttr: DN
+          emailAttr: mail
+          nameAttr: cn
+        groupSearch:
+          baseDN: ou=groups,dc=example,dc=org
+          filter: "(objectClass=organizationalUnit)"
+          userMatches:
+            - userAttr: DN
+              groupAttr: member
+              nameAttr: cn
+              

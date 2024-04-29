@@ -1,4 +1,19 @@
 services:
+  ldap:
+    build:
+      context: ./ldap
+    container_name: ldap
+    ports:
+      - "389:389"
+      - "636:636"
+    environment:
+      - LDAP_ORGANISATION=Example Inc.
+      - LDAP_DOMAIN=example.org
+      - LDAP_ADMIN_PASSWORD=admin
+    restart: unless-stopped
+    networks:
+      - network-1
+
   ondemand:
     build:
       context: ./ondemand
@@ -13,25 +28,6 @@ services:
       - network-1
     depends_on:
       - ldap
-
-  ldap:
-    build:
-      context: ./ldap
-    container_name: ldap
-    ports:
-      - "389:389"
-      - "636:636"
-    environment:
-      - LDAP_LOG_LEVEL=256
-      - LDAP_ORGANISATION=local host
-      - LDAP_DOMAIN=ldap.localhost
-      - LDAP_ADMIN_PASSWORD=admin
-      - LDAP_TLS_VERIFY_CLIENT=never
-    volumes:
-      - ./ldap/startup.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif
-    restart: unless-stopped
-    networks:
-      - network-1
 
 networks:
   network-1:
