@@ -15,6 +15,13 @@ The OnDemand service is built from the Dockerfile in the `./ondemand` directory.
 ### LDAP
 The LDAP service is built from the Dockerfile in the `./ldap` directory. It exposes ports 389 and 636. The environment variables set up the LDAP organization, domain, and admin password. The service will restart unless manually stopped.
 
+### to be implemented...
+
+- HPC and Scheduler Dockerfiles (Slurm)
+- OnDemand Passenger App support
+- Build OnDemand from source (for development using docker-compose) 
+- Setup dependencies for testing locally 
+  
 ## Networks
 
 OnDemand and LDAP are part of the `network-1` network, which uses the Docker 'bridge' driver.
