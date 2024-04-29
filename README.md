@@ -1,6 +1,11 @@
-# Docker Compose for OnDemand 
+# Docker Compose for Open OnDemand 
 
-This repository contains a Docker Compose file that sets up two services: LDAP and OnDemand.
+![ondemand-compose](ondemand-compose.png)
+
+
+This repository contains a Docker Compose file that sets up services for Open OnDemand https://github.com/OSC/ondemand.
+
+
 
 ## Services
 
