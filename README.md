@@ -1,4 +1,4 @@
-# Docker Compose for LDAP and OnDemand Services
+# Docker Compose for OnDemand 
 
 This repository contains a Docker Compose file that sets up two services: LDAP and OnDemand.
 
