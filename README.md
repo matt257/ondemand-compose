@@ -3,7 +3,7 @@
 ![ondemand-compose](ondemand-compose.png)
 
 
-This repository contains a Docker Compose file that sets up services for Open OnDemand https://github.com/OSC/ondemand.
+This repository contains a Docker Compose file that sets up services for Open OnDemand (https://github.com/OSC/ondemand).
 
 
 
@@ -21,13 +21,18 @@ OnDemand and LDAP are part of the `network-1` network, which uses the Docker 'br
 
 ## Usage
 
-To **build** the services, navigate to the directory containing the `docker-compose.yml` file and run:
+First, clone this repository (https://github.com/matt257/ondemand-compose).
+
+To **build** the services: 
+navigate to the directory containing the `docker-compose.yml` file and run:
 docker-compose build --no-cache
 
-To **start** the services, navigate to the directory containing the `docker-compose.yml` file and run:
+To **start** the services: 
+**build** and navigate to the directory containing the `docker-compose.yml` file then run:
 docker-compose up
 
-To **stop** the services, use:
+To **stop** the services, 
+use:
 docker-compose down
 
 
