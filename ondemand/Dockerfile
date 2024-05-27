@@ -60,7 +60,15 @@ RUN sed -i 's|SSLCertificateFile.*|SSLCertificateFile /etc/pki/tls/certs/localho
     sed -i 's|SSLCertificateKeyFile.*|SSLCertificateKeyFile /etc/pki/tls/private/localhost.key|' /etc/httpd/conf.d/ssl.conf
 
 # Reinstall Ruby to ensure proper integration with OpenSSL
-RUN /bin/bash -l -c "rvm pkg install openssl && rvm reinstall ruby-3.1.4 --with-openssl-dir=$HOME/.rvm/usr"
+RUN /bin/bash -l -c "rvm pkg install openssl"
+
+# Install sudo in case it's not included in the base image
+RUN dnf -y install sudo
+
+# Create a new user 'hpc.user' and add it to the 'wheel' group for sudo privileges
+RUN useradd -m hpc.user && \
+    echo 'hpc.user:password' | chpasswd && \
+    usermod -aG wheel hpc.user
 
 # setup sudoers for apache
 RUN echo -e 'Defaults:apache !requiretty, !authenticate \n\
