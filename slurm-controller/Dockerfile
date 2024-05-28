@@ -1,4 +1,3 @@
-# Use a base image with SLURM installed
 FROM ubuntu:20.04
 
 # Install necessary packages
