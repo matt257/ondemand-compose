@@ -1,7 +1,12 @@
 ---
 v2:
-  metadata:
-    title: "slurm-controller"
-  login:
-    host: "slurm-controller"
-    
+   metadata:
+     title: "Cluster Controller Cluster"
+   login:
+     host: "slurm-controller"
+   job:
+     adapter: "slurm"
+     cluster: "controller"
+     bin: "/usr/sbin/slurmctld"
+     conf: "/etc/slurm-llnl/slurm.conf"
+     copy_environment: false

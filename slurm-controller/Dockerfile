@@ -23,6 +23,10 @@ RUN apt-get update && \
 # Create munge key directory and generate key
 RUN /usr/sbin/create-munge-key
 
+# Create log directory and set permissions
+RUN mkdir -p /var/log/slurm && \
+    chown slurm:slurm /var/log/slurm
+
 # Add hpc.user with sudo privileges and set password
 RUN useradd -m hpc.user && \
     echo 'hpc.user:password' | chpasswd && \
