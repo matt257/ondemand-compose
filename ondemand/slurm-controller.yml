@@ -1,0 +1,7 @@
+---
+v2:
+  metadata:
+    title: "slurm-controller"
+  login:
+    host: "slurm-controller"
+    

@@ -26,8 +26,32 @@ services:
     restart: unless-stopped
     networks:
       - network-1
+    expose: 
+      - "22"
     depends_on:
       - ldap
+
+  slurm-controller:
+    build:
+      context: ./slurm-controller
+    container_name: slurm-controller
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    ports:
+      - "6817:6817"
+      - "6818:6818"
+    cap_add:
+      - SYS_ADMIN
+    devices:
+      - "/dev/fuse"
+    security_opt:
+      - apparmor:unconfined
+    tty: true
+    networks:
+      - network-1
+    expose: 
+      - "22"
+      - "6817"
 
 networks:
   network-1:
