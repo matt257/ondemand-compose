@@ -35,11 +35,18 @@ services:
     build:
       context: ./slurm-controller
     container_name: slurm-controller
-    ports:
-      - "6817:6817"
-      - "6818:6818"
     networks:
       - network-1
+
+  slurm-compute-node-1:
+    hostname: slurm-compute-node-1
+    build:
+      context: ./slurm-compute-node-1
+    container_name: slurm-compute-node-1
+    networks:
+      - network-1
+    depends_on:
+      - slurm-controller
 
 networks:
   network-1:

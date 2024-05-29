@@ -1,12 +1,12 @@
 ---
 v2:
    metadata:
-     title: "OnDemand Cluster: Controller Node"
+     title: "OnDemand Cluster: Compute Node 1"
    login:
-     host: "slurm-controller"
+     host: "slurm-compute-node-1"
    job:
      adapter: "slurm"
      cluster: "ondemand-cluster"
-     bin: "/usr/sbin/slurmctld"
+     bin: "/usr/sbin/slurmd"
      conf: "/etc/slurm-llnl/slurm.conf"
      copy_environment: false

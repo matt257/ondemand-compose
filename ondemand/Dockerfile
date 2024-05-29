@@ -77,6 +77,7 @@ apache ALL=(ALL) NOPASSWD: /opt/ood/nginx_stage/sbin/nginx_stage' >/etc/sudoers.
 
 COPY ./ood_portal.yml /etc/ood/config/ood_portal.yml
 COPY ./slurm-controller.yml /etc/ood/config/clusters.d/slurm-controller.yml
+COPY ./slurm-compute-node-1.yml /etc/ood/config/clusters.d/slurm-compute-node-1.yml
 
 RUN /opt/ood/ood-portal-generator/sbin/update_ood_portal
 RUN /opt/ood/nginx_stage/sbin/update_nginx_stage
