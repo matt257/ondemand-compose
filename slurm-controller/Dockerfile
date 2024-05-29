@@ -20,8 +20,11 @@ RUN apt-get update && \
     openssh-server \
     slurm-wlm
 
-# Create munge key directory and generate key
-RUN /usr/sbin/create-munge-key
+# Copy the munge.key file into the container
+COPY munge.key /etc/munge/munge.key
+
+# Set the correct ownership and permissions
+RUN chown munge:munge /etc/munge/munge.key && chmod 400 /etc/munge/munge.key
 
 # Create log directory and set permissions
 RUN mkdir -p /var/log/slurm && \
