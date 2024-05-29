@@ -26,9 +26,14 @@ COPY munge.key /etc/munge/munge.key
 # Set the correct ownership and permissions
 RUN chown munge:munge /etc/munge/munge.key && chmod 400 /etc/munge/munge.key
 
-# Create log directory and set permissions
+# Utilities for slurm
+RUN apt-get update && apt-get install -y mailutils
+
+# Create directories and set permissions
 RUN mkdir -p /var/log/slurm && \
     chown slurm:slurm /var/log/slurm
+RUN mkdir -p /var/spool/slurm/ctld && \
+    chown slurm:slurm /var/spool/slurm/ctld
 
 # Add hpc.user with sudo privileges and set password
 RUN useradd -m hpc.user && \
