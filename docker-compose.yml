@@ -32,6 +32,9 @@ services:
 
   slurm-controller:
     hostname: slurm-controller
+    environment:
+      - SLURMCTLD_HOST=slurm-controller
+      - SLURM_EXPORT_ENV=ALL
     build:
       context: ./slurm-controller
     container_name: slurm-controller
@@ -40,6 +43,9 @@ services:
 
   slurm-compute-node-1:
     hostname: slurm-compute-node-1
+    environment:
+      - SLURMCTLD_HOST=slurm-controller
+      - SLURM_EXPORT_ENV=ALL
     build:
       context: ./slurm-compute-node-1
     container_name: slurm-compute-node-1
