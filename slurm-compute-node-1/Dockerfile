@@ -1,5 +1,3 @@
-# slurm-compute-node-1
-
 FROM ubuntu:20.04
 
 # Set the environment variables
@@ -11,7 +9,22 @@ RUN apt-get update && apt-get install -y \
     munge \
     openssh-server \
     sudo \
-    rsyslog
+    rsyslog \
+    nmap \
+    software-properties-common \
+    wget \
+    libxt6 \
+    x11-xkb-utils \
+    xkb-data
+
+# Manually download and install TurboVNC
+RUN wget https://sourceforge.net/projects/turbovnc/files/3.0.1/turbovnc_3.0.1_amd64.deb && \
+    dpkg -i turbovnc_3.0.1_amd64.deb && \
+    apt-get install -f -y && \
+    rm turbovnc_3.0.1_amd64.deb
+
+# Install websockify from pip
+RUN apt-get install -y python3-pip && pip3 install websockify
 
 # Copy the munge.key file into the container
 COPY munge.key /etc/munge/munge.key

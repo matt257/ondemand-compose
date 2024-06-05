@@ -30,11 +30,15 @@ RUN dnf -y update && \
 RUN dnf -y module reset ruby && \
     dnf -y module enable ruby:3.1
 
-# Install Ruby and additional packages
-RUN dnf -y install ruby wget which httpd nodejs gcc gcc-c++ nmap-ncat && \
+# Install Ruby, additional packages, and SLURM
+RUN dnf -y install ruby wget which httpd nodejs gcc gcc-c++ nmap-ncat sudo slurm && \
     dnf -y module reset nodejs && \
     dnf -y module enable nodejs:18 && \
     dnf -y install nodejs
+
+# Configure SLURM
+COPY slurm.conf /etc/slurm-llnl/slurm.conf
+COPY cgroup.conf /etc/slurm-llnl/cgroup.conf
 
 # Create self-signed SSL certificate
 RUN mkdir -p /etc/pki/tls/certs /etc/pki/tls/private && \
@@ -59,9 +63,6 @@ RUN echo "source /usr/local/rvm/scripts/rvm" >> /etc/profile.d/rvm.sh && \
 RUN sed -i 's|SSLCertificateFile.*|SSLCertificateFile /etc/pki/tls/certs/localhost.crt|' /etc/httpd/conf.d/ssl.conf && \
     sed -i 's|SSLCertificateKeyFile.*|SSLCertificateKeyFile /etc/pki/tls/private/localhost.key|' /etc/httpd/conf.d/ssl.conf
 
-# Reinstall Ruby to ensure proper integration with OpenSSL
-RUN /bin/bash -l -c "rvm pkg install openssl"
-
 # Install sudo in case it's not included in the base image
 RUN dnf -y install sudo
 
@@ -75,18 +76,22 @@ RUN echo -e 'Defaults:apache !requiretty, !authenticate \n\
 Defaults:apache env_keep += "NGINX_STAGE_* OOD_*" \n\
 apache ALL=(ALL) NOPASSWD: /opt/ood/nginx_stage/sbin/nginx_stage' >/etc/sudoers.d/ood
 
+# Copy configuration files
 COPY ./ood_portal.yml /etc/ood/config/ood_portal.yml
 COPY ./slurm-controller.yml /etc/ood/config/clusters.d/slurm-controller.yml
 COPY ./slurm-compute-node-1.yml /etc/ood/config/clusters.d/slurm-compute-node-1.yml
 
-RUN /opt/ood/ood-portal-generator/sbin/update_ood_portal
-RUN /opt/ood/nginx_stage/sbin/update_nginx_stage
+# Update OOD portal and NGINX stage
+RUN /opt/ood/ood-portal-generator/sbin/update_ood_portal && \
+    /opt/ood/nginx_stage/sbin/update_nginx_stage
 
 # Configure httpd servername to be localhost and OIDCSSL validation to be off
 RUN echo -e "ServerName localhost\n\
 OIDCSSLValidateServer Off\n" >> /etc/httpd/conf/httpd.conf
 
-# Start ondemand
+# Add startup script and set permissions
 ADD startup.sh /startup.sh
 RUN chmod +x /startup.sh
+
+# Start OnDemand
 CMD ["/startup.sh"]

@@ -1,12 +1,23 @@
 ---
 v2:
-   metadata:
-     title: "OnDemand Cluster: Compute Node 1"
-   login:
-     host: "slurm-compute-node-1"
-   job:
-     adapter: "slurm"
-     cluster: "ondemand-cluster"
-     bin: "/usr/sbin/slurmd"
-     conf: "/etc/slurm-llnl/slurm.conf"
-     copy_environment: true
+  metadata:
+    title: "OnDemand Cluster: Compute Node 1"
+  login:
+    host: "slurm-compute-node-1"
+  job:
+    adapter: "slurm"
+    cluster: "ondemand-cluster"
+    bin: "/usr/sbin/slurmd"
+    conf: "/etc/slurm-llnl/slurm.conf"
+    copy_environment: true
+  batch_connect:
+    basic:
+      script_wrapper: |
+        %s
+      set_host: "host=$(hostname -A | awk '{print $1}')"
+    vnc:
+      script_wrapper: |
+        export PATH="/usr/local/turbovnc/bin:$PATH"
+        export WEBSOCKIFY_CMD="/usr/local/websockify/run"
+        %s
+      set_host: "host=$(hostname -A | awk '{print $1}')"
