@@ -9,4 +9,4 @@ v2:
      cluster: "ondemand-cluster"
      bin: "/usr/sbin/slurmctld"
      conf: "/etc/slurm-llnl/slurm.conf"
-     copy_environment: false
+     copy_environment: true

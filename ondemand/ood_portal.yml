@@ -1,6 +1,7 @@
 #
 # Portal configuration
 #
+
 listen_addr_port:
 - '8080'
 servername: localhost
@@ -10,6 +11,9 @@ ssl:
   - 'SSLCertificateKeyFile "/etc/pki/tls/private/localhost.key"'
 oidc_scope: "openid profile email groups"
 oidc_remote_user_claim: "email"
+node_uri: '/node'
+rnode_uri: '/rnode'
+host_regex: '[\w.-]+'
 dex:
   connectors:
     - type: ldap
@@ -35,4 +39,3 @@ dex:
             - userAttr: DN
               groupAttr: member
               nameAttr: cn
-              
