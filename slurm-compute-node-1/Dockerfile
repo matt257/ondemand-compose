@@ -18,10 +18,10 @@ RUN apt-get update && apt-get install -y \
     xkb-data
 
 # Manually download and install TurboVNC
-RUN wget https://sourceforge.net/projects/turbovnc/files/3.0.1/turbovnc_3.0.1_amd64.deb && \
-    dpkg -i turbovnc_3.0.1_amd64.deb && \
+RUN wget https://github.com/TurboVNC/turbovnc/releases/download/3.1.2/turbovnc-3.1.2.aarch64.rpm && \
+    dpkg -i turbovnc-3.1.2.aarch64.rpm && \
     apt-get install -f -y && \
-    rm turbovnc_3.0.1_amd64.deb
+    rm turbovnc-3.1.2.aarch64.rpm
 
 # Install websockify from pip
 RUN apt-get install -y python3-pip && pip3 install websockify
