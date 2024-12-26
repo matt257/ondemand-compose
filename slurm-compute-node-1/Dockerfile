@@ -19,10 +19,10 @@ RUN apt-get update && apt-get install -y \
     dbus-x11
 
 # Manually download and install TurboVNC
-RUN wget https://github.com/TurboVNC/turbovnc/releases/download/3.1.2/turbovnc_3.1.2_arm64.deb && \
-    dpkg -i turbovnc_3.1.2_arm64.deb && \
+RUN wget https://github.com/TurboVNC/turbovnc/releases/download/3.1.2/turbovnc_3.1.2_amd64.deb && \
+    dpkg -i turbovnc_3.1.2_amd64.deb && \
     apt-get install -f -y && \
-    rm turbovnc_3.1.2_arm64.deb
+    rm turbovnc_3.1.2_amd64.deb
 
 # Install websockify from pip
 RUN apt-get install -y python3-pip && pip3 install websockify
