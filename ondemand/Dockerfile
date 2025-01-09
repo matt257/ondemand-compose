@@ -1,24 +1,4 @@
-# Stage 1: Compile Ruby using Ubuntu
-FROM ubuntu:20.04 as ruby-builder
-
-# Install dependencies for building Ruby
-RUN apt-get update && \
-    apt-get install -y curl gnupg gcc g++ make \
-    libssl-dev libreadline-dev zlib1g-dev autoconf bison libyaml-dev \
-    libncurses5-dev libffi-dev libgdbm-dev openssl && \
-    rm -rf /var/lib/apt/lists/*
-
-# Import GPG keys for RVM
-RUN gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys \
-    409B6B1796C275462A1703113804BB82D39DC0E3 \
-    7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-
-# Install RVM, Ruby 3.1.4, and clean up
-RUN curl -sSL https://get.rvm.io | bash -s stable && \
-    /bin/bash -l -c "rvm install 3.1.4 --with-openssl-dir=$HOME/.rvm/usr && rvm cleanup all" && \
-    echo "source /usr/local/rvm/scripts/rvm" > /etc/profile.d/rvm.sh
-
-# Stage 2: Set up the final image using Rocky Linux
+# Set up the final image using Rocky Linux
 FROM rockylinux/rockylinux:9
 
 # Install system updates and essential packages
@@ -51,9 +31,6 @@ RUN mkdir -p /etc/pki/tls/certs /etc/pki/tls/private && \
 RUN curl -O https://yum.osc.edu/ondemand/3.1/ondemand-release-web-3.1-1.el9.noarch.rpm && \
     dnf -y install ./ondemand-release-web-3.1-1.el9.noarch.rpm && \
     dnf -y install ondemand ondemand-dex --nobest --skip-broken
-
-# Copy the RVM installations from the builder stage
-COPY --from=ruby-builder /usr/local/rvm /usr/local/rvm
 
 # Configure system to use the RVM-managed Ruby by default
 RUN echo "source /usr/local/rvm/scripts/rvm" >> /etc/profile.d/rvm.sh && \

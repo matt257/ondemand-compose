@@ -47,6 +47,9 @@ RUN echo 'root:root' | chpasswd
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed -i 's/UsePAM yes/UsePAM no/' /etc/ssh/sshd_config
 
+RUN mkdir -p /etc/ood/config/apps/bc_desktop
+COPY ./slurm-controller.yml /etc/ood/config/apps/bc_desktop/
+
 # Expose SSH and SLURM ports
 EXPOSE 22 6817 6818 6819
 

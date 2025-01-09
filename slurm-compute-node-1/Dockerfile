@@ -16,7 +16,11 @@ RUN apt-get update && apt-get install -y \
     libxt6 \
     x11-xkb-utils \
     xkb-data \
-    dbus-x11
+    dbus-x11 \
+    ubuntu-desktop 
+    # xubuntu-desktop \
+    # ubuntu-mate-desktop \
+    # kubuntu-desktop
 
 # Manually download and install TurboVNC
 RUN wget https://github.com/TurboVNC/turbovnc/releases/download/3.1.2/turbovnc_3.1.2_amd64.deb && \
