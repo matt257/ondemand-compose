@@ -1,59 +1,14 @@
-services:
-  ldap:
-    build:
-      context: ./ldap
-    container_name: ldap
-    ports:
-      - "389:389"
-      - "636:636"
-    environment:
-      - LDAP_ORGANISATION=Example Inc.
-      - LDAP_DOMAIN=example.org
-      - LDAP_ADMIN_PASSWORD=admin
-    restart: unless-stopped
-    networks:
-      - network-1
+version: '3.8'
 
+services:
   ondemand:
     build:
       context: ./ondemand
-    container_name: ondemand
     ports:
       - "80:80"
-      - "8080:8080"
-      - "5554:5554"
-      - "5556:5556"
+      - "443:443"
     restart: unless-stopped
-    networks:
-      - network-1
-    depends_on:
-      - ldap
-      - slurm-controller
 
-  slurm-controller:
-    hostname: slurm-controller
-    environment:
-      - SLURMCTLD_HOST=slurm-controller
-      - SLURM_EXPORT_ENV=ALL
-    build:
-      context: ./slurm-controller
-    container_name: slurm-controller
-    networks:
-      - network-1
-
-  slurm-compute-node-1:
-    hostname: slurm-compute-node-1
-    environment:
-      - SLURMCTLD_HOST=slurm-controller
-      - SLURM_EXPORT_ENV=ALL
-    build:
-      context: ./slurm-compute-node-1
-    container_name: slurm-compute-node-1
-    networks:
-      - network-1
-    depends_on:
-      - slurm-controller
-
-networks:
-  network-1:
-    driver: bridge
+volumes:
+  ldap_data:
+  ldap_config:
