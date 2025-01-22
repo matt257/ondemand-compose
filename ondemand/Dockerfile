@@ -38,7 +38,7 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # Expose the ports used by Apache HTTP server
-EXPOSE 80 443
+EXPOSE 80 443 8080 5554 5556
 
 # Use the entrypoint script to start the container
 ENTRYPOINT ["/entrypoint.sh"]
