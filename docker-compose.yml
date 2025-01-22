@@ -2,12 +2,36 @@ version: '3.8'
 
 services:
   ondemand:
+    container_name: ondemand
+    hostname: ondemand
     build:
       context: ./ondemand
     ports:
       - "80:80"
       - "443:443"
     restart: unless-stopped
+    networks:
+      - ondemand_network
+    depends_on:
+      - ldap
+
+  ldap:
+    build:
+      context: ./ldap
+    container_name: ldap
+    ports:
+      - "389:389"
+      - "636:636"
+    environment:
+      - LDAP_ORGANISATION=Example Inc.
+      - LDAP_DOMAIN=example.org
+      - LDAP_ADMIN_PASSWORD=admin
+    restart: unless-stopped
+    networks:
+      - ondemand_network
+
+networks:
+  ondemand_network:
 
 volumes:
   ldap_data:
