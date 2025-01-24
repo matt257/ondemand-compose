@@ -8,14 +8,17 @@ services:
       context: ./ondemand
     ports:
       - "80:80"
-      - "443:443"
+      - "8080:8080"
+      - "5554:5554"
+      - "5556:5556"
     restart: unless-stopped
     networks:
-      - ondemand_network
+      - ondemand-network
+      - slurm-network
     depends_on:
       - ldap
 
-  ldap:
+  ldap: 
     build:
       context: ./ldap
     container_name: ldap
@@ -28,10 +31,17 @@ services:
       - LDAP_ADMIN_PASSWORD=admin
     restart: unless-stopped
     networks:
-      - ondemand_network
+      - ondemand-network
+
+  slurm-controller:
+    build:
+      context: ./slurm-controller
+    networks:
+      - slurm-network
 
 networks:
-  ondemand_network:
+  ondemand-network:
+  slurm-network:
 
 volumes:
   ldap_data:
