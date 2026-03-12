@@ -16,13 +16,15 @@ RUN apt-get update && apt-get install -y \
     libxt6 \
     x11-xkb-utils \
     xkb-data \
-    dbus-x11
+    dbus-x11 \
+    gpg
 
-# Manually download and install TurboVNC
-RUN wget https://github.com/TurboVNC/turbovnc/releases/download/3.1.2/turbovnc_3.1.2_amd64.deb && \
-    dpkg -i turbovnc_3.1.2_amd64.deb && \
-    apt-get install -f -y && \
-    rm turbovnc_3.1.2_amd64.deb
+# Install TurboVNC
+RUN wget -q -O- https://packagecloud.io/dcommander/turbovnc/gpgkey | \
+    gpg --dearmor >/etc/apt/trusted.gpg.d/TurboVNC.gpg && \
+    wget -q -P /etc/apt/sources.list.d/ https://raw.githubusercontent.com/TurboVNC/repo/main/TurboVNC.list && \
+    apt-get update && \
+    apt-get install -y turbovnc
 
 # Install websockify from pip
 RUN apt-get install -y python3-pip && pip3 install websockify
